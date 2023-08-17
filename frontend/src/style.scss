@@ -1,0 +1,546 @@
+$bgColor: #b9e7e7;
+.app{
+    display: flex;
+    justify-content: center;
+    .container{
+        width: 1024px;
+        //Login
+        .auth{
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+            background-color: $bgColor;
+
+            h1{
+                font-size: 28px;
+                color: teal;
+                margin-bottom: 20px;
+            }
+            form{
+                background-color: white;
+                width: 200px;
+                display: flex;
+                border-radius: 10px;
+                gap: 10px;
+                flex-direction: column;
+                padding: 50px;
+                input{
+                    padding: 10px;
+                    margin-bottom: 5px;
+                    border: none;
+                    border-radius: 5px;
+                    outline: none;
+                    border-bottom: 1px solid gray;
+                }
+                button{
+                    padding: 10px;
+                    margin-bottom: 5px;
+                    border: none;
+                    border-radius: 5px;
+                    outline: none; 
+                    cursor: pointer;
+                    background-color: teal;
+                    color: white;
+                }
+            }
+        }
+
+        //Navbar
+        .container{
+            padding: 10px 0px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .logo{
+                img{
+                    width: 100px;
+                }
+            }
+            .links{
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                span{
+                    cursor: pointer;
+                }
+                h6 {
+                    text-decoration: none;
+                    font-size: 16px;
+                    font-weight: 300;
+                  }
+                  .link{
+                    text-decoration: none;
+                  }
+                .write{
+                    background-color: $bgColor;
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-weight: 300;
+                    border: 1px solid white;
+                    &:hover{
+                        color: teal;
+                        background-color: white;
+                        border: 1px solid teal;
+                    }
+                }
+            }
+        }
+
+        //Footer
+        footer{
+            margin-top: 100px;
+            padding: 20px;
+            display: flex;
+            background-color: $bgColor;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            img{
+                width: 70px;
+                // height: 50px;
+            }
+        }
+        //Home
+        .home{
+            .posts{
+                margin-top: 50px;
+                display: grid;
+                // flex-direction: column;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 20px;
+
+                .post{
+                    display: flex;
+                    flex-direction: column;
+                    transition: transform 0.3s;
+                    &:hover {
+                        transform: translateY(-5px) scale(1.02); /* 3D effect on hover */
+                    }
+                    .card {
+                        display: flex;
+                        flex-direction: column;
+                        background-color: #ffffff;
+                        border: 1px solid #e0e0e0;
+                        border-radius: 15px;
+                        transition: $bgColor 0.3s;
+                        overflow: hidden; /* Hide overflowing content */
+                        &:hover {
+                            background-color: #f0f0f0; /* Highlight entire card on hover */
+                        }
+                    }
+                    .img{
+                        position: relative;
+                        flex: 1;
+                        // overflow: hidden; /* Hide overflowing content */
+                        
+
+                        img{
+                           width: 100%;
+                           max-height: 300px;
+                           object-fit: cover;
+                        }
+                    }
+                    .content{
+                        flex: 2;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        padding: 20px; 
+
+                        &:hover {
+                            background-color: #f0f0f0; /* Highlight section on hover */
+                        }
+
+                        h1{
+                            font-size: 24px;
+                            margin-top: 20px;
+                        }
+                        p{
+                            font-size: 18px;
+                        }
+                        .link{
+                            text-decoration: none;
+                        }
+                        button{
+                            width: max-content;
+                            padding: 10px 20px ;
+                            cursor: pointer;
+                            border: none;
+                            background-color: white;
+                            border: 1px solid teal;
+                            border-radius: 5px;
+                            color: teal;
+                            &:hover{
+                                border: 1px solid white;
+                                background-color: $bgColor;
+                                color: black;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //Single
+
+        .single{
+            display: flex;
+            justify-content: center;
+            // align-items: center;
+            // height: 100vh;
+
+            .content{
+                flex: 5;
+                display: flex;
+                flex-direction: column;
+                gap: 30px;
+                width: 80%;
+                max-width: 1200px;
+                
+                padding: 20px;
+                border-radius: 8px;
+                
+                img{
+                    width: 100%;
+                    height: 300px;
+                    object-fit: cover;
+                }
+                
+                .user{
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 14px;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 10px;
+                  img{
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                  }
+                  span{
+                    font-weight: bold;
+                  }
+
+                  
+                  .edit{
+                      display: flex;
+                      gap: 5px;
+                      img{
+                          width: 20px;
+                          height: 20px;
+                          cursor: pointer;
+                        }
+                    }
+                }
+                h1{
+                    font-size: 42px;
+                    color: #333;
+                    margin-top: 10px;
+                }
+                span {
+                    display: block;
+                    margin-bottom: 10px;
+                  }
+                p{
+                    text-align: justify;
+                    line-height: 30px;
+                }
+                .section {
+                    margin-top: 20px;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                    padding: 5px;
+                    background-color: #f8f8f8;
+                  
+                    h2 {
+                      font-size: 24px;
+                      margin-bottom: 10px;
+                    }
+                  
+                    ul {
+                      list-style: disc;
+                      margin-left: 20px;
+                    }
+                  
+                    ol {
+                      list-style: decimal;
+                      margin-left: 20px;
+                  
+                      li {
+                        img {
+                          max-width: 100%;
+                          margin: 10px 0;
+                        }
+                      }
+                    }
+                  }
+            }
+            .menu{
+                flex: 2;
+                display: flex;
+                flex-direction: column;
+                gap: 25px;
+                h1{
+                    font-size: 20px;
+                    color: #555;
+                }
+                .post{
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+
+                    img{
+                        width: 100%;
+                        height: 200px;
+                        object-fit: cover;
+                    }
+                    h2{
+                        color: #555;
+                    }
+                    button{
+                        width: max-content;
+                        padding: 7.5px 15px ;
+                        cursor: pointer;
+                        border: none;
+                        background-color: white;
+                        border: 1px solid teal;
+                        border-radius: 5px;
+                        color: teal;
+                        &:hover{
+                            border: 1px solid white;
+                            background-color: $bgColor;
+                            color: black;
+                        }
+                    }
+                }
+            }
+        }
+        //write
+        .add{
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+
+            .content{
+                flex: 5;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                // overflow: hidden;
+                
+                input{
+                    padding: 10px 2px 10px;
+                    border: 1px solid lightgray;
+                    outline: none;
+                }
+                .editorContainer{
+                    height: 100px;
+                    // overflow: auto;
+                    // border: 1px solid lightgray;
+
+                    textarea{
+                        width: 100%;
+                    //   padding: 10px;
+                      border: 1px solid lightgray;
+                    //   border-radius: 5px;
+                      resize: vertical;
+                      outline: none;
+                    }
+                    
+                    
+                }
+                .materials {
+                    margin-top: 20px;
+                
+                    h1 {
+                      font-size: 24px;
+                      margin-bottom: 10px;
+                      color: #555;
+                    }
+                    button {
+                        margin-top: 10px;
+                        padding: 5px 10px;
+                        background-color: teal;
+                        color: white;
+                        border: none;
+                        cursor: pointer;
+                      }
+                
+                    .material {
+                      display: flex;
+                      gap: 10px;
+                      margin-bottom: 5px;
+                
+                      input {
+                        padding: 8px;
+                        border: 1px solid lightgray;
+                        // border-radius: 5px;
+                        flex: 1;
+                        outline: none;
+                      }
+                      button {
+                        margin-top: 10px;
+                        padding: 5px 10px;
+                        background-color: teal;
+                        color: white;
+                        border: none;
+                        cursor: pointer;
+                      }
+                    }
+                }
+                .safety {
+                    margin-top: 20px;
+                
+                    h1 {
+                      font-size: 24px;
+                      margin-bottom: 10px;
+                      color: #555;
+                    }
+                
+                    textarea {
+                      width: 100%;
+                    //   padding: 10px;
+                      border: 1px solid lightgray;
+                    //   border-radius: 5px;
+                      resize: vertical;
+                      outline: none;
+                    }
+                  }
+                  .steps {
+                    margin-top: 20px;
+                  
+                    h1 {
+                      font-size: 24px;
+                      color: #555;
+                    }
+                  
+                    button {
+                      margin-top: 10px;
+                      padding: 5px 10px;
+                      background-color: teal;
+                      color: white;
+                      border: none;
+                      cursor: pointer;
+                    }
+                  }
+            }
+            .menu{
+                flex: 2;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                .error{
+                  color: red;
+                  font-size: 20px;
+                }
+                .item{
+                    .difficulty {
+                        display: flex;
+                        align-items: center;
+                    
+                        label {
+                            margin-right: 10px;
+                        }
+                    
+                        select {
+                            padding: 8px;
+                            border: 1px solid lightgray;
+                            border-radius: 5px;
+                            cursor: pointer;
+                        }
+                    }
+                    .subject {
+                        display: flex;
+                        align-items: center;
+                    
+                        label {
+                            margin-right: 10px;
+                        }
+                    
+                        select {
+                            padding: 8px;
+                            border: 1px solid lightgray;
+                            border-radius: 5px;
+                            cursor: pointer;
+                        }
+                    }
+                    border: 1px solid lightgray;
+                    padding: 10px;
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    font-size: 12px;
+                    color: #555;
+                    h1{
+                        font-size: 20px;
+                    }
+                    label{
+                        text-decoration: underline;
+                        cursor: pointer;
+                    }
+                    .buttons{
+                        display: flex;
+                        justify-content: space-between;
+                        :first-child{
+                            cursor: pointer;
+                            color: teal;
+                            background-color: white;
+                            border: 1px solid teal;
+                            padding: 3px 5px;
+                        }
+                        :last-child{
+                            cursor: pointer;
+                            color: white;
+                            background-color: teal;
+                            border: 1px solid teal;
+                            padding: 3px 5px;
+                        }
+                    }
+                }
+            }
+        }
+        //Step
+        .step {
+            margin-bottom: 20px;
+            
+            h2 {
+              font-size: 18px;
+            }
+          
+            input[type="text"],
+            textarea {
+              width: 100%;
+            //   padding: 10px;
+              margin-top: 5px;
+              border: 1px solid lightgray;
+            //   border-radius: 5px;
+              font-size: 14px;
+              outline: none;
+            }
+          
+            textarea {
+              resize: vertical;
+            }
+          
+            img {
+              max-width: 100%;
+              height: auto;
+              margin-top: 10px;
+            }
+          
+            p {
+              margin-top: 10px;
+            }
+          }
+          
+    }
+}
