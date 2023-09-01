@@ -10,7 +10,7 @@ export const Home = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get(`http://localhost:8800/api/posts${subject}`); 
+                const res = await axios.get(`https://stem-blog.onrender.com/api/posts${subject}`); 
                 setPosts(res.data);
             } catch (err) {
                 console.log(err);

@@ -21,7 +21,7 @@ export const Single = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/api/posts/${postId}`); // Adjust the API endpoint
+        const res = await axios.get(`https://stem-blog.onrender.com/api/posts/${postId}`); // Adjust the API endpoint
         setPost(res.data); // Set post data
       } catch (err) {
         console.log(err);
@@ -32,7 +32,7 @@ export const Single = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8800/api/posts/${postId}`);
+      await axios.delete(`https://stem-blog.onrender.com/api/posts/${postId}`);
       navigate('/');
     } catch (err) {
       console.log(err);

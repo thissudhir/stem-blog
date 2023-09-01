@@ -9,13 +9,13 @@ export const AuthContextProvider = ({ children }) => {
 
   // Define login function
   const login = async (inputs) => {
-      const res = await axios.post('http://localhost:8800/api/auth/login', inputs);
+      const res = await axios.post('https://stem-blog.onrender.com/api/auth/login', inputs);
       setCurrentUser(res.data);
   };
   // Define logout function
   const logout = async () => {
     try {
-      await axios.post('http://localhost:8800/api/auth/logout');
+      await axios.post('https://stem-blog.onrender.com/api/auth/logout');
       setCurrentUser(null);
     } catch (error) {
       // Handle logout error here

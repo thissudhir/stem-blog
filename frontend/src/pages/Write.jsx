@@ -119,10 +119,10 @@ export const Write = () => {
       // await axios.post('http://localhost:8800/api/posts', newExperiment);
       if (postData) {
         // Use PUT request if editing an existing post
-        await axios.put(`http://localhost:8800/api/posts/${postData.id}`, newExperiment);
+        await axios.put(`https://stem-blog.onrender.com/api/posts/${postData.id}`, newExperiment);
       } else {
         // Use POST request if creating a new post
-        await axios.post('http://localhost:8800/api/posts', newExperiment);
+        await axios.post('https://stem-blog.onrender.com/api/posts', newExperiment);
       }
  // Use your API endpoint here
 
