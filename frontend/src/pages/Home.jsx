@@ -10,7 +10,7 @@ export const Home = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get(`http://localhost:8800/api/posts${subject}`); // Adjust the API endpoint
+                const res = await axios.get(`http://localhost:8800/api/posts${subject}`); 
                 setPosts(res.data);
             } catch (err) {
                 console.log(err);
@@ -22,7 +22,7 @@ export const Home = () => {
     const getText = (html) =>{
         const doc = new DOMParser().parseFromString(html, "text/html")
         return doc.body.textContent
-      }
+    }
 
 return (
     <div className="home">
@@ -31,14 +31,14 @@ return (
                 <div className="post" key={post.id}>
                     <div className="card">
                         <div className="img">
-                            <img src={post.main_image} alt="" /> {/* Adjust the image field */}
+                            <img src={post.main_image} alt="" /> 
                         </div>
                         <div className="content">
+                            <h1>{post.name}</h1> 
+                            <p>{getText(post.description)}</p> 
                             <Link className='link' to={`/post/${post.id}`}>
-                                <h1>{post.name}</h1> {/* Adjust the title field */}
+                                <button>Know More</button>
                             </Link>
-                            <p>{getText(post.description)}</p> {/* Adjust the description field */}
-                            <button>Know More</button>
                         </div>
                     </div>
                 </div>

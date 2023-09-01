@@ -9,15 +9,9 @@ export const AuthContextProvider = ({ children }) => {
 
   // Define login function
   const login = async (inputs) => {
-    try {
       const res = await axios.post('http://localhost:8800/api/auth/login', inputs);
       setCurrentUser(res.data);
-    } catch (error) {
-      // Handle login error here
-      console.error('Error logging in:', error);
-    }
   };
-
   // Define logout function
   const logout = async () => {
     try {

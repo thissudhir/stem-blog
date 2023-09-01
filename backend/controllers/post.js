@@ -45,7 +45,7 @@ export const getPost = (req, res) => {
       return res.status(500).json('Internal server error');
     }
 
-    console.log('Fetched rows:', rows); // Debug line
+    // console.log('Fetched rows:', rows); // Debug line
 
     const experiment = processRows(rows);
     res.status(200).json(experiment);
@@ -60,18 +60,27 @@ export const getPost = (req, res) => {
       main_image: rows[0].main_image,
       safety_precautions: rows[0].safety_precautions,
       materials: [],
-      steps: []
+      steps: [],
     };
   
+    const seenSteps = new Set(); // Use a Set to track seen steps
+    const materialMap = new Map(); // Use a Map to groupmaterials
+
     for (const row of rows) {
       if (row.material_name && row.material_quantity) {
-        experiment.materials.push({
-          name: row.material_name,
-          quantity: row.material_quantity
-        });
+        const materialKey = `${row.material_name}-${row.material_quantity}`;
+        if (!materialMap.has(materialKey)) {
+          materialMap.set(materialKey, {
+            name: row.material_name,
+            quantity: row.material_quantity,
+          });
+        }
       }
+    
   
-      if (row.step_number !== null && row.step_image && row.step_description) {
+      if (row.step_number !== null && !seenSteps.has(row.step_number)) {
+        // Check if the step_number has not been seen before
+        seenSteps.add(row.step_number); // Add it to the Set
         experiment.steps.push({
           step_number: row.step_number,
           image: row.step_image,
@@ -79,28 +88,21 @@ export const getPost = (req, res) => {
         });
       }
     }
-  
+    experiment.materials = Array.from(materialMap.values());
     return experiment;
   }
   
   
+  
 };
 
-
-// Import necessary modules and dependencies
-
-// ... (your other imports)
-
-// ... (other imports)
-
-// ... (other imports)
 
 export const addPost = async (req, res) => {
   const {
     name,
     description,
     materials,
-    safetyPrecautions, // Updated variable name
+    safetyPrecautions, 
     steps,
     difficulty,
     subject,
@@ -112,7 +114,7 @@ export const addPost = async (req, res) => {
 
   db.query(
     q,
-    [name, description, difficulty, subject, main_image, safetyPrecautions], // Corrected field name
+    [name, description, difficulty, subject, main_image, safetyPrecautions], 
     async (err, result) => {
       if (err) {
         console.error('Error inserting data:', err);
@@ -122,7 +124,7 @@ export const addPost = async (req, res) => {
       const experimentId = result.insertId;
 
       try {
-        await insertMaterialsAndSteps(experimentId, materials, steps); // Added try-catch block here
+        await insertMaterialsAndSteps(experimentId, materials, steps); 
 
         return res.status(200).json('Post added successfully');
       } catch (error) {
@@ -132,11 +134,6 @@ export const addPost = async (req, res) => {
     }
   );
 };
-
-// ... (rest of the code)
-
-// ... (rest of the code)
-
 
 async function insertMaterialsAndSteps(experimentId, materials, steps) {
   // Insert materials into the materials table
@@ -172,13 +169,13 @@ export const deletePost = (req, res) => {
   });
 };
 
-export const updatePost = (req, res) => {
+export const updatePost = async (req, res) => {
   const postId = req.params.id;
   const {
     name,
     description,
     materials,
-    safetyPrecautions, // Updated variable name
+    safetyPrecautions,
     steps,
     difficulty,
     subject,
@@ -186,25 +183,33 @@ export const updatePost = (req, res) => {
   } = req.body;
 
   const q =
-    'UPDATE experiments SET `name` = ?, `description `= ?, `difficulty` = ?, `subject` = ?,` materials` =?, `safetyPrecautions` = ?,`steps` = ?, `main_image` = ? WHERE id = ?';
+    'UPDATE experiments SET `name` = ?, `description` = ?, `difficulty` = ?, `subject` = ?, `safety_precautions` = ?, `main_image` = ? WHERE id = ?';
 
-  db.query(
-    q,
-    [name, description, difficulty, subject, steps, materials, safetyPrecautions, main_image, postId],
-    (err, result) => {
-      if (err) {
-        console.error('Error updating data:', err);
-        return res.status(500).json('Internal server error');
-      }
+  try {
+    await db.query(
+      q,
+      [name, description, difficulty, subject, safetyPrecautions, main_image, postId]
+    );
 
-      if (result.affectedRows === 0) {
-        return res.status(404).json('Post not found');
-      }
+    await updateMaterialsAndSteps(postId, materials, steps); 
 
-      return res.status(200).json('Post updated successfully');
-    }
-  );
+    return res.status(200).json('Post updated successfully');
+  } catch (err) {
+    console.error('Error updating data:', err);
+    return res.status(500).json('Internal server error');
+  }
 };
+
+async function updateMaterialsAndSteps(experimentId, materials, steps) {
+  // Delete existing materials and steps related to the experiment
+  await db.query('DELETE FROM materials WHERE experiment_id = ?', [experimentId]);
+  await db.query('DELETE FROM steps WHERE experiment_id = ?', [experimentId]);
+
+  // Insert new materials and steps
+  await insertMaterialsAndSteps(experimentId, materials, steps);
+}
+
+
 
 export const getMaterialsByExperimentId = (req, res) => {
     const experimentId = req.params.id;

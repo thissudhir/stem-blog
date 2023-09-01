@@ -9,6 +9,7 @@ import moment from 'moment';
 
 export const Single = () => {
   const [post, setPost] = useState(null);
+  
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ export const Single = () => {
             <div className="user">
               {currentUser && (
                 <div className="edit">
-                  <Link to={`/write?edit=${post.id}`} state={post}>
+                  <Link to={`/write?edit=${post.id}`} state={{ postData: post }}>
                     <img src={Edit} alt="Edit" />
                   </Link>
                   <img onClick={handleDelete} src={Delete} alt="Delete" />
@@ -64,42 +65,56 @@ export const Single = () => {
               {post.subject}
             </span>
             {/* Materials List */}
-            <div className="section">
-              <h2>Materials List</h2>
-              <ul>
-                {post.materials &&
-                  post.materials.map((material, index) => {
-                    console.log(`Rendering material ${index}`);
-                    return (
-                      <li key={index}>
-                        {material.name} - {material.quantity}
-                      </li>
-                    );
-                })}
-              </ul>
-            </div>
+            {post.materials && post.materials.length > 0 && (
+              <div className="section">
+                <h2>Materials List</h2>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Material Name</th>
+                      <th>Quantity</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {post.materials.map((material, index) => {
+                      // console.log(`Rendering Material ${index}`);
+                      return (
+                        <tr key={`material-${index}`}>
+                          <td>{material.name}</td>
+                          <td>{material.quantity}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
             {/* Safety Precautions */}
-            <div className="section">
-              <h2>Safety Precautions</h2>
-              <p>{post.safety_precautions}</p>
-            </div>
+            {post.safety_precautions && (
+              <div className="section">
+                <h2>Safety Precautions</h2>
+                <p>{post.safety_precautions}</p>
+              </div>
+            )}
             {/* Step-by-step Instructions */}
-            <div className="section">
-              <h2>Step-by-step Instructions</h2>
-              <ol>
-                {post.steps &&
-                  post.steps.map((step, index) => {
-                    console.log(`Rendering step ${index}`);
+            {post.steps && post.steps.length > 0 && (
+              <div className="section">
+                <h2>Step-by-step Instructions</h2>
+                <ol>
+                  {post.steps.map((step, index) => {
+                    // console.log(`Rendering step ${index}`);
                     return (
-                      <li key={step.step_number}>
+                      <li key={`step-${index}`}>
                         <p>Step {step.step_number}</p>
                         <img src={step.image} alt={`Image ${step.step_number}`} />
                         <p>{step.description}</p>
                       </li>
                     );
-                })}
-              </ol>
-            </div>
+                  })}
+                </ol>
+              </div>
+            )}
+
           </>
         )}
       </div>

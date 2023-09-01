@@ -9,26 +9,26 @@ export const Login = () => {
     username: "",
     password: "",
   });
+
   const [err, setError] = useState(null);
-
   const navigate = useNavigate();
-
   const { login } = useContext(AuthContext);
-
 
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await login(inputs)
+      console.log("Login successful. Navigating...");
       navigate("/");
     } catch (err) {
       setError(err.response.data);
     }
   };
+  
   return (
     <div className="auth">
       <h1>Login</h1>

@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import { Step } from '../components/Step';
 import axios from 'axios'; // Use single quotes consistently
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
 
 export const Write = () => {
@@ -21,6 +21,22 @@ export const Write = () => {
 
   const [materials, setMaterials] = useState([{ name: '', quantity: '' }]);
   const [safetyPrecautions, setSafetyPrecautions] = useState(''); // Add safetyPrecautions state
+
+  const location = useLocation();
+  const postData = location.state && location.state.postData;
+
+  useEffect(() => {
+    if (postData) {
+      setTitle(postData.name);
+      setDescription(postData.description);
+      setSubject(postData.subject);
+      setImageUrl(postData.main_image);
+      setMaterials(postData.materials);
+      setSafetyPrecautions(postData.safety_precautions);
+      setSteps(postData.steps);
+      setDifficultyLevel(postData.difficulty);
+    }
+  }, [postData]);
 
   const handleImageUrlChange = (e) => {
     setImageUrl(e.target.value);
@@ -87,7 +103,6 @@ export const Write = () => {
       return;
     }
     // Create a new experiment object with all the data
-    try {
     const newExperiment = {
       name: title,
       description: description,
@@ -98,9 +113,17 @@ export const Write = () => {
       steps: steps,
       difficulty: difficultyLevel,
     };
-
+    
+    try {
       // Post the new experiment data to create a new experiment
-      await axios.post('http://localhost:8800/api/posts', newExperiment);
+      // await axios.post('http://localhost:8800/api/posts', newExperiment);
+      if (postData) {
+        // Use PUT request if editing an existing post
+        await axios.put(`http://localhost:8800/api/posts/${postData.id}`, newExperiment);
+      } else {
+        // Use POST request if creating a new post
+        await axios.post('http://localhost:8800/api/posts', newExperiment);
+      }
  // Use your API endpoint here
 
  // Navigate to the home page
@@ -109,7 +132,7 @@ export const Write = () => {
   console.error('Error creating new experiment:', error);
 }
 };
-// console.log("safetyPrecautions",safetyPrecautions);
+// console.log("step",safetyPrecautions);
 // console.log("difficultyLevel",difficultyLevel);
 
 
@@ -178,8 +201,8 @@ export const Write = () => {
                 stepNumber={step.stepNumber}
                 imageSrc={step.imageSrc}
                 description={step.description}
-                onImageChange={updateStepImage} // Pass the function as prop
-                onDescriptionChange={updateStepDescription} // Pass the function as prop
+                onImageChange={updateStepImage} 
+                onDescriptionChange={updateStepDescription} 
               />
               <button onClick={() => removeStep(step.stepNumber)}>
                 Remove Step
@@ -208,7 +231,6 @@ export const Write = () => {
               />
             )}
           <div className="buttons">
-            {/* <button>Save as a Draft</button> */}
             <button onClick={handleClick}>Publish</button>
           </div>
         </div>
@@ -236,7 +258,7 @@ export const Write = () => {
             <select
               id="subject"
               name="subject"
-              value={subject} // Bind subject value
+              value={subject} 
               onChange={(e) => setSubject(e.target.value)}
             >
               <option value="physics">Physics</option>
