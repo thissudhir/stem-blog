@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 
 dotenv.config();
-// mysql://root:mbXw7CkLPxzmcoIEIG8m@containers-us-west-81.railway.app:7942/railway
+
 
 export const db= mysql.createConnection({
     host:process.env.host,
