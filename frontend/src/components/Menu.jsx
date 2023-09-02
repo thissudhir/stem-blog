@@ -9,7 +9,7 @@ export const Menu = ({subject}) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get(`http://localhost:8800/api/posts?subject=${subject}`); 
+                const res = await axios.get(`https://stem-blog.onrender.com/api/posts?subject=${subject}`); 
                 setPosts(res.data);
             } catch (err) {
                 console.log(err);
