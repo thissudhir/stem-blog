@@ -1,11 +1,11 @@
-import { db } from '../db.js';
+import { pool } from '../db.js';
 
 export const getPosts = (req, res) => {
   const q = req.query.subject
     ? 'SELECT * FROM experiments WHERE subject = ?'
     : 'SELECT * FROM experiments';
 
-  db.query(q, [req.query.subject], (err, data) => {
+  pool.query(q, [req.query.subject], (err, data) => {
     if (err) {
       console.error('Error querying database:', err);
       return res.status(500).json('Internal server error');
@@ -39,7 +39,7 @@ export const getPost = (req, res) => {
 
   `;
 
-  db.query(q, [experimentId], (err, rows) => {
+  pool.query(q, [experimentId], (err, rows) => {
     if (err) {
       console.error('Error querying database:', err);
       return res.status(500).json('Internal server error');
@@ -112,7 +112,7 @@ export const addPost = async (req, res) => {
   const q =
     'INSERT INTO experiments (name, description, difficulty, subject, main_image, safety_precautions) VALUES (?, ?, ?, ?, ?, ?)';
 
-  db.query(
+  pool.query(
     q,
     [name, description, difficulty, subject, main_image, safetyPrecautions], 
     async (err, result) => {
@@ -139,13 +139,13 @@ async function insertMaterialsAndSteps(experimentId, materials, steps) {
   // Insert materials into the materials table
   for (const material of materials) {
     const materialQuery = 'INSERT INTO materials (experiment_id, name, quantity) VALUES (?, ?, ?)';
-    await db.query(materialQuery, [experimentId, material.name, material.quantity]);
+    await pool.query(materialQuery, [experimentId, material.name, material.quantity]);
   }
 
   // Insert steps into the steps table
   for (const step of steps) {
     const stepQuery = 'INSERT INTO steps (experiment_id, step_number, image, description) VALUES (?, ?, ?, ?)';
-    await db.query(stepQuery, [experimentId, step.stepNumber, step.imageSrc, step.description]);
+    await pool.query(stepQuery, [experimentId, step.stepNumber, step.imageSrc, step.description]);
   }
 }
 
@@ -155,7 +155,7 @@ export const deletePost = (req, res) => {
 
   const q = 'DELETE FROM experiments WHERE id = ?';
 
-  db.query(q, [postId], (err, result) => {
+  pool.query(q, [postId], (err, result) => {
     if (err) {
       console.error('Error deleting data:', err);
       return res.status(500).json('Internal server error');
@@ -186,7 +186,7 @@ export const updatePost = async (req, res) => {
     'UPDATE experiments SET `name` = ?, `description` = ?, `difficulty` = ?, `subject` = ?, `safety_precautions` = ?, `main_image` = ? WHERE id = ?';
 
   try {
-    await db.query(
+    await pool.query(
       q,
       [name, description, difficulty, subject, safetyPrecautions, main_image, postId]
     );
@@ -202,8 +202,8 @@ export const updatePost = async (req, res) => {
 
 async function updateMaterialsAndSteps(experimentId, materials, steps) {
   // Delete existing materials and steps related to the experiment
-  await db.query('DELETE FROM materials WHERE experiment_id = ?', [experimentId]);
-  await db.query('DELETE FROM steps WHERE experiment_id = ?', [experimentId]);
+  await pool.query('DELETE FROM materials WHERE experiment_id = ?', [experimentId]);
+  await pool.query('DELETE FROM steps WHERE experiment_id = ?', [experimentId]);
 
   // Insert new materials and steps
   await insertMaterialsAndSteps(experimentId, materials, steps);
@@ -215,7 +215,7 @@ export const getMaterialsByExperimentId = (req, res) => {
     const experimentId = req.params.id;
     const q = "SELECT * FROM materials WHERE experiment_id = ?";
 
-    db.query(q, [experimentId], (err, data) => {
+    pool.query(q, [experimentId], (err, data) => {
         if (err) {
             console.error('Error querying database:', err);
             return res.status(500).json('Internal server error');
